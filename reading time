@@ -1,0 +1,36 @@
+from datetime import datetime, timedelta
+
+def get_time_input(prompt):
+    while True:
+        try:
+            time_input = input(prompt)
+            # Convert input to datetime object
+            time_object = datetime.strptime(time_input, '%H:%M')
+            return time_object
+        except ValueError:
+            print("Invalid format. Please enter the time in HH:MM format.")
+
+def calculate_reading_time(start_time, end_time):
+    # Calculate the difference
+    duration = end_time - start_time
+    # If the duration is negative, it means the end time is on the next day
+    if duration < timedelta(0):
+        duration += timedelta(days=1)
+    return duration
+
+def main():
+    print("Enter your reading start and end times in 24-hour format (HH:MM).")
+    
+    start_time = get_time_input("Start time (HH:MM): ")
+    end_time = get_time_input("End time (HH:MM): ")
+    
+    reading_duration = calculate_reading_time(start_time, end_time)
+    
+    # Format the duration as hours and minutes
+    hours, remainder = divmod(reading_duration.seconds, 3600)
+    minutes = remainder // 60
+    
+    print(f"Total reading time: {hours} hours and {minutes} minutes.")
+
+if __name__ == "__main__":
+    main()
